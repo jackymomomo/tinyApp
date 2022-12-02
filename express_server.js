@@ -1,5 +1,6 @@
 const { Template } = require("ejs");
 const express = require("express");
+const { url } = require("inspector");
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -8,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 function generateRandomString() {
   let randomString = ''
-  const char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789'
+ const char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789'
   for (let x = 0; x < 7; x++){
     randomString = Math.floor(Math.random() * char.length)
   }
@@ -22,10 +23,17 @@ const urlDatabase = {
 
 app.get("/urls/new", (req, res) => {
   res.render('urls_new')
-  })
-app.post("/urls", (req, res) => {
-  console.log(req.body)
-  res.send('OK')
+})
+
+app.post('/urls', (req, res) => {
+  const randomShort = generateRandomString();
+  urlDatabase[randomShort] = req.body.longURL;
+  res.redirect('/urls/' + String(randomShort));
+});
+
+app.get('/u/:id', (req, res) => {
+  const longURL = req.body.longURL
+  res.redirect(longURL)
 })
 
 app.get("/urls/:id", (req, res) => {
