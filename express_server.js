@@ -7,6 +7,7 @@ const PORT = 8080; // default port 8080
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
+
 function generateRandomString() {
   let randomString = ''
  const char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789'
@@ -20,6 +21,11 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+app.post('/urls/:id/delete', (req, res) => {
+  delete urlDatabase[req.params.id];
+    res.redirect('/urls');
+  })
+
 
 app.get("/urls/new", (req, res) => {
   res.render('urls_new')
