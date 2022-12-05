@@ -17,15 +17,6 @@ function generateRandomString() {
   return randomString
 }
 
-
-
-app.post('/login', (req, res) => {
-  let username = req.body.username
-  res
-  .cookie('username', username)
-  .redirect('/urls')
-})
-
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -34,9 +25,6 @@ app.post('/urls/:id/delete', (req, res) => {
   delete urlDatabase[req.params.id];
     res.redirect('/urls');
   })
-
-
-
 
 app.post('/urls/:id/edit', (req, res) => {
   urlDatabase[req.params.id] = req.body.newURL;
@@ -53,11 +41,6 @@ app.post('/urls', (req, res) => {
   res.redirect('/urls/' + String(randomShort));
 });
 
-app.post('/logout', (req, res) => {
-res
-.clearCookie('username')
-.redirect(302, '/urls')
-})
 
 app.get('/u/:id', (req, res) => {
   const longURL = req.body.longURL
