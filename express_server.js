@@ -1,12 +1,12 @@
 const { Template } = require("ejs");
 const express = require("express");
-const { url } = require("inspector");
+var cookieParser = require('cookie-parser')
 const app = express();
 const PORT = 8080; // default port 8080
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser())
 
 function generateRandomString() {
   let randomString = ''
@@ -17,6 +17,15 @@ function generateRandomString() {
   return randomString
 }
 
+
+
+app.post('/login', (req, res) => {
+  let username = req.body.username
+  res
+  .cookie('username', username)
+  .redirect('/urls')
+})
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -26,6 +35,13 @@ app.post('/urls/:id/delete', (req, res) => {
     res.redirect('/urls');
   })
 
+
+
+
+app.post('/urls/:id/edit', (req, res) => {
+  urlDatabase[req.params.id] = req.body.newURL;
+  res.redirect('/urls');
+ });
 
 app.get("/urls/new", (req, res) => {
   res.render('urls_new')
